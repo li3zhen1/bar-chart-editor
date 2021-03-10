@@ -1,0 +1,253 @@
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.8em 1em 1.2em 1em;
+    background: #1e1e1e;
+    border-radius: 4px;
+    border: none;
+}
+
+.hljs, .hljs-subst, .hljs-meta {
+    color: #d4d4d4
+}
+
+.hljs-comment {
+    color: #6a9955
+}
+
+.jljs-name, .hljs-attribute, .hljs-meta-keyword, .hljs-attr, .hljs-built_in, .hljs-params {
+    color: #9cdcfe
+}
+
+.hljs-function>.hljs-keyword, .hljs-class>.hljs-keyword, .hljs-literal, .hljs-function, .hljs-tag>.hljs-name, .hljs-params>.hljs-built_in {
+    color: #569bd5
+}
+
+.hljs-keyword {
+    color: #c586c0
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-selector-tag {
+    font-weight: 700
+}
+
+.hljs-number {
+    color: #b5cea8
+}
+
+.hljs-deletion, .hljs-quote, .hljs-selector-class, .hljs-selector-id, .hljs-string, .hljs-template-tag, .hljs-type {
+    color: #ce9178
+}
+
+.hljs-section, .hljs-title {
+    color: #dcdcaa;
+    font-weight: 700
+}
+
+code>.hljs-meta {
+    color: #dcdcaa;
+}
+
+.hljs-link, .hljs-regexp, .hljs-selector-attr, .hljs-selector-pseudo, .hljs-symbol, .hljs-template-variable, .hljs-variable {
+    color: #bc6060
+}
+
+.hljs-addition, .hljs-bullet, .hljs-code {
+    color: #397300
+}
+
+.hljs-tag>.hljs-meta {
+    color: #1f7199
+}
+
+.hljs-meta-string {
+    color: #4d99bf
+}
+
+.hljs-emphasis {
+    font-style: italic
+}
+
+.hljs-strong {
+    font-weight: 700
+}
+
+.language-js:before, .language-javascript:before {
+    font-family: 'Inter';
+    content: 'JavaScript';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-html:before, .language-xml:before {
+    font-family: 'Inter';
+    content: 'HTML / XML';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-css:before {
+    font-family: 'Inter';
+    content: 'CSS';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-cpp:before {
+    font-family: 'Inter';
+    content: 'C++';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-java:before {
+    font-family: 'Inter';
+    content: 'Java';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-typescript:before, .language-ts:before {
+    font-family: 'Inter';
+    content: 'TypeSript';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-python:before, .language-py:before {
+    font-family: 'Inter';
+    content: 'Python';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-csharp:before, .language-cs:before {
+    font-family: 'Inter';
+    content: 'C#';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-lua:before {
+    font-family: 'Inter';
+    content: 'Lua';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-rust:before {
+    font-family: 'Inter';
+    content: 'Rust';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-objectivec:before, .language-objc:before {
+    font-family: 'Inter';
+    content: 'Objective-C';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-swift:before {
+    font-family: 'Inter';
+    content: 'Swift';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-shell:before {
+    font-family: 'Inter';
+    content: 'Shell';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-json:before {
+    font-family: 'Inter';
+    content: 'JSON';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.language-kotlin:before {
+    font-family: 'Inter';
+    content: 'Kotlin';
+    display: block;
+    margin: 0 -1em 0.6em -1em;
+    border-bottom: 2px solid #ffffff20;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+    opacity: 0.6;
+    font-weight: 700;
+}
