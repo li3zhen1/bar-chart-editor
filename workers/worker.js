@@ -8,10 +8,10 @@ let config = {
     initShowTime: 500,
     animationDuration: 5000,
     // bar区域的左、右、上、下间距（没有计入周围的文本） 
-    m: [0.2, 0.3, 0.1, 0.1],
+    m: [0.3, 0, 0, 0],
     // 时间文本的位置
-    timeTextRight: 0.25,
-    timeTextTop: 0.85,
+    timeTextRight: 0.1,
+    timeTextTop: 0.9,
     barGapRatio: 2,
     //barStroke: 'none',
     objNum: 10,
@@ -168,7 +168,7 @@ let helper = {
                 },
                 style: {
                     "fill-opacity": { d: [], t: yd },
-                    "stroke-opacity": { d: [], t: yd },
+                    "opacity": { d: [], t: yd },
                 }
             };
         } else if (type === 'static-text2') {
@@ -189,7 +189,7 @@ let helper = {
                 style: {
                     "font-size": { d: [], t: xd },
                     "fill-opacity": { d: [], t: yd },
-                    "stroke-opacity": { d: [], t: yd },
+                    "opacity": { d: [], t: yd },
                 }
             };
         } else return {}
@@ -989,9 +989,9 @@ let calLayout = {
     },
     getCommand: function (config) {
         //let totalNumber = data[0].length;
+        console.log(config)
         let mode = config.mode;
         calLayout.init(config);
-
 
         let data = [];
         for (let i = 0; i < config.data.length; i++) {
@@ -1016,7 +1016,7 @@ let calLayout = {
         } else if (mode === "cycle") {
             interpolatedData = dataGenerator.sortDataForCycle(data, config.objNum, config.animationDuration * (data.length - 1), config.valueSwapRatio, config.frameMs);
         }
-        //console.log(interpolatedData);
+        console.log(interpolatedData);
 
         //let cutted = [interpolatedData[0], interpolatedData[1], interpolatedData[2], interpolatedData[3], interpolatedData[4]]
         let command;
@@ -1034,7 +1034,33 @@ let calLayout = {
         console.log(command);
         return command;
     },
-
+    getProps: function (config) {
+        console.log(config)
+        let mode = config.mode;
+        calLayout.init(config);
+        let data = [];
+        for (let i = 0; i < config.data.length; i++) {
+            data[i] = dataGenerator.copyData(config.data[i]);
+        }
+        data = dataGenerator.insertMaxMin(data, config.objNum);
+        config.animationDuration =
+            Math.floor(config.animationDuration / config.frameMs) * config.frameMs;
+        let interpolatedData;
+        if (mode === "stage") {
+            interpolatedData = dataGenerator.sortDataItemWise(data, config.animationDuration, config.frameMs, config.swapTime);
+        } else if (mode === "stage-old") {
+            let stepData = dataGenerator.linearInterpolation(
+                data,
+                config.interpolationStepOld
+            );
+            let newDuration = Math.floor(config.animationDuration / ((config.interpolationStepOld + 1) * config.frameMs)) * config.frameMs
+            console.log(newDuration)
+            interpolatedData = dataGenerator.sortDataOldStage(stepData, newDuration);
+        } else if (mode === "cycle") {
+            interpolatedData = dataGenerator.sortDataForCycle(data, config.objNum, config.animationDuration * (data.length - 1), config.valueSwapRatio, config.frameMs);
+        }
+        return this.generateFrames(interpolatedData, config);
+    },
     calcAxis: function (minArr, maxArr, tickNum) {
         let tickValues = [];
 
@@ -1086,9 +1112,7 @@ let calLayout = {
         packData,
         config,
     ) {
-        //console.log(data)
-        //console.log(animationDuration)
-
+        console.log(packData, config)
         let elementArray = [];
         let minArr = packData['min'];
         let maxArr = packData['max'];
@@ -1097,10 +1121,11 @@ let calLayout = {
         let data = packData['data']
 
         let calcAxisRes = this.calcAxis(minArr, maxArr, config.tickNum);
-        //console.log(calcAxisRes)
+        console.log(calcAxisRes)
         let tickByValue = calcAxisRes[0];
         let maxTickNum = calcAxisRes[1];
 
+        console.log(tickByValue, maxTickNum)
         // -------------------- axis --------------------
         let tickTextLen = 5;
         let fontSize = this.barHeight * config.axisNumberSize;
@@ -1112,16 +1137,40 @@ let calLayout = {
                 (this.width * (1 - config.m[0] - config.m[1])) /
                 (maxTickNum * tickTextLen);
         }
+
+
+
+        console.log(tickByValue)
+        //{0: Array(31), 2000000000000: Array(31), 4000000000000: Array(31), 6000000000000: Array(31), 8000000000000: Array(31), 10000000000000: Array(31), …}
+
+        let axisProps = {
+            shift: [],
+            opacity: []
+        }
+        for (let it in tickByValue) {
+            let axisShift = maxArr.map(
+                (maxVal, i) => this.calcX(it, maxVal, config.width, config.m)
+            )
+            let axisOpacity = tickByValue[it]
+            axisProps.shift.push(axisShift)
+            axisProps.opacity.push(axisOpacity)
+        }
+        console.log(axisProps)
+
+
+        // tickByValue 轴的数目
         for (let j in tickByValue) {
+
             let line = {
                 attr: {
                     "x1": { d: [], t: xDuration },
                     "x2": { d: [], t: xDuration },
                 },
                 style: {
-                    "stroke-opacity": { d: [], t: xDuration },
+                    "opacity": { d: [], t: xDuration },
                 }
             };
+
             let text = {
                 attr: {
                     transform: { d: [], t: xDuration }
@@ -1134,12 +1183,16 @@ let calLayout = {
             for (let i = 0; i < maxArr.length; i++) {
                 line.attr.x1.d.push(this.calcX(j, maxArr[i], config.width, config.m))
                 line.attr.x2.d.push(this.calcX(j, maxArr[i], config.width, config.m))
-                line.style['stroke-opacity'].d.push(tickByValue[j][i])
+                line.style['opacity'].d.push(tickByValue[j][i])
                 text.attr.transform.d.push(helper.toTransform(
                     this.calcX(j, maxArr[i], config.width, config.m),
                     (this.height * (1 - config.m[3]) + this.barHeight * 1.2)))
                 text.style["fill-opacity"].d.push(tickByValue[j][i])
             }
+
+            console.log("@line_text_init", JSON.stringify(line), JSON.stringify(text))
+
+
             elementArray.push({
                 type: "line",
                 class: config.numLineClass,
@@ -1172,6 +1225,7 @@ let calLayout = {
                 }
             });
         }
+
 
         // -------------------- timeLabel --------------------
         let timeLabel = {
@@ -1236,7 +1290,7 @@ let calLayout = {
                 // --------------- 文字标注1 条形外文本 ---------------
                 text1.attr.transformOri.dy.push(textY)
                 text1.style["fill-opacity"].d.push(fillOpacity)
-                text1.style["stroke-opacity"].d.push(fillOpacity)
+                text1.style["opacity"].d.push(fillOpacity)
 
                 // --------------- 文字标注2 条形内文本 ---------------
                 if (config.showBarInnerLabel) {
@@ -1247,7 +1301,7 @@ let calLayout = {
                 // --------------- 文字标注3 条形外数字 ---------------
                 text3.attr.transformOri.dy.push(textY)
                 text3.style["fill-opacity"].d.push(fillOpacity)
-                text3.style["stroke-opacity"].d.push(fillOpacity)
+                text3.style["opacity"].d.push(fillOpacity)
             }
             for (let j = 0; j < data[i]['x'].length; j++) {
                 let item = data[i]['x'][j]
@@ -1376,10 +1430,34 @@ let calLayout = {
 
         }
 
-        //console.log(JSON.parse(JSON.stringify(elementArray[0])))
-        //console.log(JSON.parse(JSON.stringify(duration)))
-        //let customCubic = d3.easeLinear;
+        console.log(elementArray)
         let customCubic = d3.easePoly.exponent(4);
+
+
+        function linearInterpolate(originalArr, precision) {
+            return originalArr.flatMap(
+                (it, idx) => {
+                    if (idx + 1 === originalArr.length) return [it]
+                    else return [... new Array(precision)].map(
+                        (acc, index) => d3.interpolate(it, originalArr[idx + 1])(index / precision)
+                    )
+                }
+            )
+        }
+
+        function nonLinearInterpolate(originalArr, precision, step) {
+            return originalArr.flatMap(
+                (it, idx) => {
+                    if (idx + 1 === originalArr.length) return [it]
+                    else return [... new Array(precision)].map(
+                        (acc, index) => d3.interpolate(it, originalArr[idx + 1])(customCubic(index / precision))
+                    )
+                }
+            )
+        }
+
+        console.log(linearInterpolate(axisProps.shift, 200))
+        console.log(linearInterpolate(axisProps.opacity, 200))
 
         let timeTooltip = []
         let itpLen = []
@@ -1431,9 +1509,9 @@ let calLayout = {
                             itpArray.push(Math.min(itpArrayX[k], itpArrayY[k]));
                         }
                         itpLen.push([attr, "fill-opacity", itpArray.length])
-                        itpLen.push([attr, "stroke-opacity", itpArray.length])
+                        itpLen.push([attr, "opacity", itpArray.length])
                         elementArray[j]["attributes"][attr]["fill-opacity"] = itpArray
-                        elementArray[j]["attributes"][attr]["stroke-opacity"] = itpArray
+                        elementArray[j]["attributes"][attr]["opacity"] = itpArray
                     } else {
                         for (k = 0; k < ele['d'].length - 1; k++) {
                             let itp = d3.interpolate(ele['d'][k], ele['d'][k + 1])
@@ -1517,6 +1595,87 @@ let calLayout = {
 
         return command;
     },
+
+
+    generateFrames: function (
+        packData,
+        config,
+    ) {
+        let minArr = packData['min'];
+        let maxArr = packData['max'];
+        let xDuration = packData['xDuration']
+        let time = packData['time']
+        let data = packData['data']
+        let calcAxisRes = this.calcAxis(minArr, maxArr, config.tickNum);
+        let [tickByValue, maxTickNum] = calcAxisRes;
+
+        const customCubic = d3.easePoly.exponent(4);
+        const interpolateArray = (originalArr, durationArr, durationPerFrame) => {
+            return originalArr.flatMap(
+                (it, idx) => {
+                    if (idx + 1 == originalArr.length) return [it]
+                    else {
+                        const insertion = Math.floor(durationArr[idx] / durationPerFrame)
+                        return [... new Array(insertion)].map(
+                            (acc, index) => d3.interpolate(it, originalArr[idx + 1])(index / insertion)
+                        )
+                    }
+                }
+            )
+        }
+        const smoothlyInterpolateArray = (originalArr, durationArr, durationPerFrame) => {
+            return originalArr.flatMap(
+                (it, idx) => {
+                    if (idx + 1 == originalArr.length) return [it]
+                    else {
+                        const insertion = Math.floor(durationArr[idx] / durationPerFrame)
+                        return [... new Array(insertion)].map(
+                            (acc, index) => d3.interpolate(it, originalArr[idx + 1])(customCubic(index / insertion))
+                        )
+                    }
+                }
+            )
+        }
+        const tooltipProps = interpolateArray(time, xDuration, 20)
+        let axisProps = []
+        for (let it in tickByValue) {
+            const itAsNum = Number(it)
+            axisProps.push(
+                {
+                    name: it,
+                    shift: interpolateArray(
+                        maxArr.map(
+                            maxVal => itAsNum / maxVal
+                        ),
+                        xDuration,
+                        20),
+                    opacity: interpolateArray(tickByValue[it], xDuration, 20)
+                }
+            )
+        }
+        const processBarData = (barRawProp, durationPerFrame) => {
+            const _d = barRawProp.y.map(it => it.duration)
+            return {
+                name: barRawProp.name,
+                times: interpolateArray(barRawProp.x.map(it => it.time), xDuration, durationPerFrame),
+                values: interpolateArray(barRawProp.x.map(it => it.value), xDuration, durationPerFrame),
+                // FIXME: 负值？
+                lengths: interpolateArray(barRawProp.x.map(it => it.value / it.max), xDuration, durationPerFrame),
+                // TODO: percent
+                shifts: smoothlyInterpolateArray(barRawProp.y.map(it => it.rank), _d, durationPerFrame)
+            }
+        }
+        let barProps = []
+        for (let it in data) {
+            barProps.push(processBarData(data[it], 20))
+        }
+        return {
+            totalFrames: tooltipProps.length,
+            tooltipProps,
+            axisProps,
+            barProps
+        }
+    },
 };
 
 
@@ -1561,11 +1720,35 @@ function wrappedCommandGenerator(
     return false;
 }
 
+function getFrames(
+    userConfig,
+    parsedSheet,
+    useRowAsItem
+) {
+    let nameRC;
+    if (useRowAsItem) { nameRC = "row" } else { nameRC = "column" };
+    let res = tableToJSON(parsedSheet, nameRC);
+    if (res.success) {
+        let data = res.data;
+        let slimedData = dataGenerator.slimData(data, userConfig.objNum);
+        userConfig.data = slimedData;
+        if (typeof userConfig.colors === "undefined")
+            userConfig.colors = color.generateColor2(slimedData[0].length);
+        if (typeof userConfig.width === "undefined") userConfig.width = 1080;
+        if (typeof userConfig.height === "undefined") userConfig.height = 720;
+        for (let i in userConfig) {
+            config[i] = userConfig[i];
+        }
+        return calLayout.getProps(config);
+    }
+    return null;
+}
+
 onmessage = function (event) {
     let userConfig = event.data.userConfig;
     let parsedSheet = event.data.parsedSheet;
     let rowAsItem = event.data.useRowAsItem;
-    let command = wrappedCommandGenerator(userConfig, parsedSheet, rowAsItem);
-
-    postMessage(command);
+    let frames = getFrames(userConfig, parsedSheet, rowAsItem);
+    console.log(frames);
+    postMessage(frames);
 }
