@@ -1705,9 +1705,7 @@ function wrappedCommandGenerator(
         // slimData是深拷贝
         let slimedData = dataGenerator.slimData(data, userConfig.objNum);
         userConfig.data = slimedData;
-        // 颜色的数量是所有出现过的bar的数量，可能大于objNum
-        if (typeof userConfig.colors === "undefined")
-            userConfig.colors = color.generateColor2(slimedData[0].length);
+
         if (typeof userConfig.width === "undefined") userConfig.width = 1080;
         if (typeof userConfig.height === "undefined") userConfig.height = 720;
         //console.log(userConfig.data);
@@ -1732,14 +1730,9 @@ function getFrames(
         let data = res.data;
         let slimedData = dataGenerator.slimData(data, userConfig.objNum);
         userConfig.data = slimedData;
-        if (typeof userConfig.colors === "undefined")
-            userConfig.colors = color.generateColor2(slimedData[0].length);
         if (typeof userConfig.width === "undefined") userConfig.width = 1080;
         if (typeof userConfig.height === "undefined") userConfig.height = 720;
-        for (let i in userConfig) {
-            config[i] = userConfig[i];
-        }
-        return calLayout.getProps(config);
+        return calLayout.getProps({ ...config, ...userConfig });
     }
     return null;
 }
