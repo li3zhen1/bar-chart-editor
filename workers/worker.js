@@ -418,7 +418,7 @@ let dataGenerator = {
                 csvData[filterData[i][j]["name"]].push(10 - j);
             }
         }
-        console.log(csvData);
+        //console.log(csvData);
     },
     sortData: function (data) {
         let newData = [];
@@ -486,7 +486,7 @@ let dataGenerator = {
         }
         //console.log(newData)
         //console.log(itemRanks)
-        console.log("mergeThs", mergeThs)
+        //console.log("mergeThs", mergeThs)
         let fItemRanks = {}
         let overflowTime = 0
 
@@ -543,7 +543,7 @@ let dataGenerator = {
 
         }
 
-        console.log(JSON.parse(JSON.stringify(rankChanges)))
+       //console.log(JSON.parse(JSON.stringify(rankChanges)))
         for (let i in rankChanges) {
             let newRanks = [fItemRanks[i][0]]
             //console.log(i, 'rank-start', fItemRanks[i][0].rank)
@@ -674,7 +674,7 @@ let dataGenerator = {
         }
         */
 
-        console.log(JSON.parse(JSON.stringify(fItemRanks)))
+        //console.log(JSON.parse(JSON.stringify(fItemRanks)))
 
         for (let i in fItemRanks) {
             if (fItemRanks[i][fItemRanks[i].length - 1]['tid'] < overflowTime + itemRanks[i].length - 1)
@@ -989,7 +989,7 @@ let calLayout = {
     },
     getCommand: function (config) {
         //let totalNumber = data[0].length;
-        console.log(config)
+       //console.log(config)
         let mode = config.mode;
         calLayout.init(config);
 
@@ -1011,12 +1011,12 @@ let calLayout = {
                 config.interpolationStepOld
             );
             let newDuration = Math.floor(config.animationDuration / ((config.interpolationStepOld + 1) * config.frameMs)) * config.frameMs
-            console.log(newDuration)
+           //console.log(newDuration)
             interpolatedData = dataGenerator.sortDataOldStage(stepData, newDuration);
         } else if (mode === "cycle") {
             interpolatedData = dataGenerator.sortDataForCycle(data, config.objNum, config.animationDuration * (data.length - 1), config.valueSwapRatio, config.frameMs);
         }
-        console.log(interpolatedData);
+       //console.log(interpolatedData);
 
         //let cutted = [interpolatedData[0], interpolatedData[1], interpolatedData[2], interpolatedData[3], interpolatedData[4]]
         let command;
@@ -1031,11 +1031,11 @@ let calLayout = {
                 config
             );
         }
-        console.log(command);
+       //console.log(command);
         return command;
     },
     getProps: function (config) {
-        console.log(config)
+       //console.log(config)
         let mode = config.mode;
         calLayout.init(config);
         let data = [];
@@ -1054,7 +1054,7 @@ let calLayout = {
                 config.interpolationStepOld
             );
             let newDuration = Math.floor(config.animationDuration / ((config.interpolationStepOld + 1) * config.frameMs)) * config.frameMs
-            console.log(newDuration)
+           //console.log(newDuration)
             interpolatedData = dataGenerator.sortDataOldStage(stepData, newDuration);
         } else if (mode === "cycle") {
             interpolatedData = dataGenerator.sortDataForCycle(data, config.objNum, config.animationDuration * (data.length - 1), config.valueSwapRatio, config.frameMs);
@@ -1112,7 +1112,7 @@ let calLayout = {
         packData,
         config,
     ) {
-        console.log(packData, config)
+       //console.log(packData, config)
         let elementArray = [];
         let minArr = packData['min'];
         let maxArr = packData['max'];
@@ -1121,11 +1121,11 @@ let calLayout = {
         let data = packData['data']
 
         let calcAxisRes = this.calcAxis(minArr, maxArr, config.tickNum);
-        console.log(calcAxisRes)
+       //console.log(calcAxisRes)
         let tickByValue = calcAxisRes[0];
         let maxTickNum = calcAxisRes[1];
 
-        console.log(tickByValue, maxTickNum)
+       //console.log(tickByValue, maxTickNum)
         // -------------------- axis --------------------
         let tickTextLen = 5;
         let fontSize = this.barHeight * config.axisNumberSize;
@@ -1140,7 +1140,7 @@ let calLayout = {
 
 
 
-        console.log(tickByValue)
+       //console.log(tickByValue)
         //{0: Array(31), 2000000000000: Array(31), 4000000000000: Array(31), 6000000000000: Array(31), 8000000000000: Array(31), 10000000000000: Array(31), …}
 
         let axisProps = {
@@ -1155,7 +1155,7 @@ let calLayout = {
             axisProps.shift.push(axisShift)
             axisProps.opacity.push(axisOpacity)
         }
-        console.log(axisProps)
+       //console.log(axisProps)
 
 
         // tickByValue 轴的数目
@@ -1190,7 +1190,7 @@ let calLayout = {
                 text.style["fill-opacity"].d.push(tickByValue[j][i])
             }
 
-            console.log("@line_text_init", JSON.stringify(line), JSON.stringify(text))
+           //console.log("@line_text_init", JSON.stringify(line), JSON.stringify(text))
 
 
             elementArray.push({
@@ -1430,7 +1430,7 @@ let calLayout = {
 
         }
 
-        console.log(elementArray)
+       //console.log(elementArray)
         let customCubic = d3.easePoly.exponent(4);
 
 
@@ -1456,8 +1456,8 @@ let calLayout = {
             )
         }
 
-        console.log(linearInterpolate(axisProps.shift, 200))
-        console.log(linearInterpolate(axisProps.opacity, 200))
+       //console.log(linearInterpolate(axisProps.shift, 200))
+       //console.log(linearInterpolate(axisProps.opacity, 200))
 
         let timeTooltip = []
         let itpLen = []
@@ -1588,7 +1588,7 @@ let calLayout = {
                 res_for_CSV = res_for_CSV + (JSON.stringify(command['elements'][i].attributes.attr.y) + '\n')
             }
         }
-        console.log(res_for_CSV)
+       //console.log(res_for_CSV)
         */
 
 
@@ -1742,6 +1742,6 @@ onmessage = function (event) {
     let parsedSheet = event.data.parsedSheet;
     let rowAsItem = event.data.useRowAsItem;
     let frames = getFrames(userConfig, parsedSheet, rowAsItem);
-    console.log(frames);
+   //console.log(frames);
     postMessage(frames);
 }

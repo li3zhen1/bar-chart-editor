@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+message ExportedRacingBarChart {
+
+    message Colorschemecategorical {
+        string schemeName = 1;
+        string schemeKey = 2;
+        repeated string specifiedColors = 3;
+        double secondaryOpacity = 4;
+    }
+
+    message Colorschemesequential {
+        string schemeName = 1;
+        string schemeKey = 2;
+        bool reversedMapping = 3;
+        uint32 exponent = 4;
+        double bias = 5;
+    }
+
+    message Colorschemeprominencemono {
+        string schemeName = 1;
+        string schemeKey = 2;
+        string colorSharp = 3;
+        string color = 4;
+    }
+
+    message Colorschemeprominenceopacity {
+        string schemeName = 1;
+        string schemeKey = 2;
+        repeated string specifiedColors = 3;
+        double secondaryOpacity = 4;
+    }
+
+    message Stylecontrol {
+        string colorBy = 1;
+        repeated uint32 targetOfInterest = 2;
+        string highlightCode = 3;
+        Colorschemecategorical colorSchemeCategorical = 4;
+        Colorschemesequential colorSchemeSequential = 5;
+        Colorschemeprominencemono colorSchemeProminenceMono = 6;
+        Colorschemeprominenceopacity colorSchemeProminenceOpacity = 7;
+        double opacity = 8;
+    }
+
+    message Titlecontrol {
+        uint32 x = 1;
+        uint32 y = 2;
+        string dominantBaseline = 3;
+        string textAnchor = 4;
+        string text = 5;
+        uint32 fontSize = 6;
+        string fill = 7;
+        uint32 weight = 8;
+    }
+
+    message Subtitlecontrol {
+        uint32 x = 1;
+        uint32 y = 2;
+        string dominantBaseline = 3;
+        string textAnchor = 4;
+        string text = 5;
+        uint32 fontSize = 6;
+        string fill = 7;
+        uint32 weight = 8;
+    }
+
+    message Unitcontrol {
+        uint32 x = 1;
+        uint32 y = 2;
+        string dominantBaseline = 3;
+        string textAnchor = 4;
+        string text = 5;
+        uint32 fontSize = 6;
+        string fill = 7;
+        uint32 weight = 8;
+    }
+
+    message Coresheetdata {
+        repeated string values = 1;
+    }
+
+    message Layoutcontrol {
+        string gravity = 1;
+        double barStart = 2;
+        double barEnd = 3;
+        double firstBarBorder = 4;
+        double lastBarBorder = 5;
+        double barWidth = 6;
+        double axisBleeding = 7;
+        uint32 barsVisible = 8;
+    }
+
+    bool autoPlay = 1;
+    bool enableLoop = 2;
+    bool displayProgressBar = 3;
+    Stylecontrol styleControl = 4;
+    Titlecontrol titleControl = 5;
+    Subtitlecontrol subtitleControl = 6;
+    Unitcontrol unitControl = 7;
+    uint32 barsVisible = 8;
+    repeated Coresheetdata coreSheetData = 9;
+    bool useRowAsItem = 10;
+    string colorSchemeCss = 11;
+    Layoutcontrol layoutControl = 12;
+}
