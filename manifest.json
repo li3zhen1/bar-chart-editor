@@ -1,0 +1,18 @@
+{
+    "short_name": "Racing Bar Chart Generator",
+    "name": "[PKUVIS] Racing Bar Chart Generator",
+    "start_url": "/",
+    "background_color": "#f1f3f4",
+    "display": "standalone",
+    "theme_color": "#030405",
+    "description": "Generate racing bar charts with ease.",
+    "orientation": "portrait",
+    "splash_pages": null,
+    "icons": [
+        {
+          "src": "icon.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+]
+}
