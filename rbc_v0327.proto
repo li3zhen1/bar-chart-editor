@@ -90,6 +90,16 @@ message ExportedRacingBarChart {
         uint32 barsVisible = 8;
     }
 
+    message Datetimeformat {
+        bool displayYear = 1;
+        bool displayMonth = 2;
+        bool displayDate = 3;
+        bool displayHour = 4;
+        bool displayMinute = 5;
+        bool displaySecond = 6;
+
+    }
+
     bool autoPlay = 1;
     bool enableLoop = 2;
     bool displayProgressBar = 3;
@@ -102,4 +112,5 @@ message ExportedRacingBarChart {
     bool useRowAsItem = 10;
     string colorSchemeCss = 11;
     Layoutcontrol layoutControl = 12;
+    Datetimeformat dateTimeFormat = 13;
 }
